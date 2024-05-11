@@ -1,5 +1,5 @@
 # chat-with-multiple-pdfs
-In this repo, i am able to chat with multiple pdfs. I have used streamlit at frontend. Used FAISS (Facebook AI Similarity Search), a library which is used for similarity search of vectors.
+In this repo, i am able to chat with multiple pdfs. I have used streamlit at frontend. Used FAISS (Facebook AI Similarity Search), a library which is used for similarity search of vectors. This chatbot is trained in such a way that it will not provide random output, if answer is not available in context. It will just say i dont know.  
 
 # Stack
 
