@@ -67,6 +67,13 @@ def user_input(user_question):
   print(response)
   st.write("Reply: ", response["output_text"])
 
+def clear_vector_store():
+  embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001")
+  db = FAISS.load_local("faiss_index", embeddings, allow_dangerous_deserialization=True)
+  for doc_id in range(db.index.ntotal):
+      db.delete([db.index_to_docstore_id[doc_id]])
+  db.save_local("faiss_index")
+
 def main():
   st.set_page_config("Chat With Multiple PDFs")
   st.header("Chat with Multiple PDF using Gemini")
@@ -78,7 +85,13 @@ def main():
 
   with st.sidebar:
     st.title("Menu:")
-    pdf_docs = st.file_uploader("Upload your ODF files and click on the button below to start the chat", type=["pdf"], accept_multiple_files=True)
+    pdf_docs = st.file_uploader("Upload your PDF files and click on the button below to start the chat", type=["pdf"], accept_multiple_files=True)
+    num_pdfs = len(pdf_docs)
+    if num_pdfs: 
+      print(f"Number of PDFs uploaded: {num_pdfs}")
+    else:
+      clear_vector_store()
+    
     if st.button("Submit & Process"):
       with st.spinner("Processing..."):
         raw_text = get_pdf_text(pdf_docs)
